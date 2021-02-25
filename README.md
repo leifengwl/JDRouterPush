@@ -2,7 +2,7 @@
 <h1 align="center">
 JDRouterPush
 </h1>
-
+</div>
 
 ## 项目简介
 
@@ -18,21 +18,19 @@ JDRouterPush
 
 - 打开HttpCanary点击右下角按钮开始抓包
 
-- ![](docs/IMG/httpcanary1.jpg)
+- <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
 
 - 然后再打开京东云无线宝,点击积分管理
 
-- ![](docs/IMG/httpcanary2.jpg)
-
-- ![](docs/IMG/httpcanary3.jpg)
+  <img src="docs/IMG/httpcanary2.jpg" style="zoom: 33%;" /><img src="docs/IMG/httpcanary3.jpg" style="zoom: 33%;" />
 
 - 回到HttpCanary，右上角找到搜索，搜索`wskey` 
 
-- ![](docs/IMG/httpcanary4.jpg)
+  <img src="docs/IMG/httpcanary4.jpg" style="zoom:33%;" />
 
 - 然后随便点击一条进去，找到请求里面的`wskey` ，复制值
 
-  ![](docs/IMG/httpcanary5.jpg)
+  <img src="docs/IMG/httpcanary5.jpg" style="zoom:33%;" />
 
 3. **点击项目 Settings -> Secrets -> New Secrets 添加以下 2 个 Secrets，其中server酱微信推送的sckey可参阅[微信订阅通知](#微信订阅通知)**
 
@@ -41,7 +39,7 @@ JDRouterPush
 | WSKEY         | 从京东云无线宝中获取 |
 | SERVERPUSHKEY | server酱推送的sckey  |
 
-​	![](docs/IMG/settings.jpg)
+​	<img src="docs/IMG/settings.jpg" style="zoom: 50%;" />
 
 1. **开启 Actions 并触发每日自动执行**
 
@@ -73,6 +71,4 @@ JDRouterPush
     ![](docs/IMG/serverpush.jpg)
 
 4. 推送效果展示
-    ![](docs/IMG/ysxg1.jpg)
-
-  ![](docs/IMG/ysxg2.jpg)
+    <img src="docs/IMG/ysxg1.jpg" style="zoom:33%;" /> <img src="docs/IMG/ysxg2.jpg" style="zoom:33%;" />
