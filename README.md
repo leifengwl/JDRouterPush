@@ -1,9 +1,8 @@
-# 
-
 <div align="center">
 <h1 align="center">
 JDRouterPush
 </h1>
+
 
 ## 项目简介
 
@@ -71,9 +70,9 @@ JDRouterPush
 2. 点击点[发送消息](http://sc.ftqq.com/?c=code) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
 
 3. [绑定微信账号](http://sc.ftqq.com/?c=wechat&a=bind) ，开启微信推送。
-  ![](docs/IMG/serverpush.jpg)
+    ![](docs/IMG/serverpush.jpg)
 
 4. 推送效果展示
-  ![](docs/IMG/ysxg1.jpg)
+    ![](docs/IMG/ysxg1.jpg)
 
   ![](docs/IMG/ysxg2.jpg)
