@@ -18,7 +18,7 @@ JDRouterPush
 
 - 打开HttpCanary点击右下角按钮开始抓包
 
-- <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
+  <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
 
 - 然后再打开京东云无线宝,点击积分管理
 
