@@ -6,7 +6,14 @@ JDRouterPush
 
 ## 项目简介
 
-本项目只调用京东云无线宝API,可每天定时推送积分情况
+本项目调用京东云无线宝API,可每天定时推送积分收益情况,帮助你更好的观察主要信息
+
+## 更新日志
+### 2021-02-25: 
+1. 实现多设备查询
+2. 查询今日收益,总收益,可用收益
+3. 设备在线天数
+4. 可查看最近七条积分动态
 
 ## 使用说明
 
@@ -18,7 +25,7 @@ JDRouterPush
 
 - 打开HttpCanary点击右下角按钮开始抓包
 
-- <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
+  <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
 
 - 然后再打开京东云无线宝,点击积分管理
 
