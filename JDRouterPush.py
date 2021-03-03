@@ -12,7 +12,7 @@ headers = {
 # Store query results
 final_result = {}
 # 当前版本
-version = "20210302"
+version = "20210303"
 
 # 获取当天时间和当天积分
 def todayPointIncome():
@@ -78,7 +78,7 @@ def routerAccountInfo(mac):
         else:
             print("Find mac failure!")
     else:
-        print("获取routerAccountInfo失败")
+        print("Request routerAccountInfo failed!")
 
 # 路由活动信息
 def routerActivityInfo(mac):
@@ -98,7 +98,7 @@ def routerActivityInfo(mac):
             point_info = final_result["pointInfos"][index]
             point_info.update(activity_info)
     else:
-        print("获取routerActivityInfo失败")
+        print("Request routerActivityInfo failed!")
 
 # 收益信息
 def todayPointDetail():
@@ -185,14 +185,17 @@ def resultDisplay(SERVERPUSHKEY):
         bindAccount = pointInfo["bindAccount"]
         recentExpireAmount = pointInfo["recentExpireAmount"]
         recentExpireTime = pointInfo["recentExpireTime"]
-        satisfiedTimes = pointInfo["satisfiedTimes"]
+        satisfiedTimes = ""
+        if pointInfo.get("satisfiedTimes"):
+            satisfiedTimes = pointInfo["satisfiedTimes"]
         pointRecords = pointInfo["pointRecords"]
         point_infos = point_infos+ "\n" + "* 京东云无线宝_" + str(mac[-3:]) + "==>" \
                       + "\n   · 今日积分：" + str(todayPointIncome) \
                       + "\n   · 可用积分：" + str(amount) \
-                      + "\n   · 总收益积分：" + str(allPointIncome) \
-                      + "\n   · 累计在线：" + str(satisfiedTimes)  + "天"\
-                      + "\n   · 最近到期积分：" + str(recentExpireAmount) \
+                      + "\n   · 总收益积分：" + str(allPointIncome)
+        if len(satisfiedTimes) > 0:
+            point_infos = point_infos + "\n   · 累计在线：" + str(satisfiedTimes)  + "天"
+        point_infos = point_infos + "\n   · 最近到期积分：" + str(recentExpireAmount) \
                       + "\n   · 最近到期时间：" + recentExpireTime \
                       + "\n   · 最近7条记录："
         for pointRecord in pointRecords:
@@ -258,11 +261,9 @@ def main(WSKEY,SERVERPUSHKEY):
     todayPointDetail()
     pinTotalAvailPoint()
     resultDisplay(SERVERPUSHKEY)
-    # sendNotification(SERVERPUSHKEY, today_total_point, today_point_detail)
 
 # 读取配置文件
 if __name__ == '__main__':
     WSKEY = os.environ["WSKEY"]
     SERVERPUSHKEY = os.environ["SERVERPUSHKEY"]
     main(WSKEY,SERVERPUSHKEY)
-
