@@ -193,7 +193,7 @@ def resultDisplay(SERVERPUSHKEY):
                       + "\n   · 今日积分：" + str(todayPointIncome) \
                       + "\n   · 可用积分：" + str(amount) \
                       + "\n   · 总收益积分：" + str(allPointIncome)
-        if len(satisfiedTimes) > 0:
+        if satisfiedTimes != "":
             point_infos = point_infos + "\n   · 累计在线：" + str(satisfiedTimes)  + "天"
         point_infos = point_infos + "\n   · 最近到期积分：" + str(recentExpireAmount) \
                       + "\n   · 最近到期时间：" + recentExpireTime \
