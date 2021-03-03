@@ -6,14 +6,20 @@ JDRouterPush
 
 ## 项目简介
 
-本项目只调用京东云无线宝API,可每天定时推送积分情况
+本项目调用京东云无线宝API,可每天定时推送积分收益情况,帮助你更好的观察主要信息
 
 ## 更新日志
+### 2021-03-02: 
+1. 查询绑定的京东账户
+2. 通知排版优化
+3. 脚本检测更新
+4. 支持Server酱Turbo版
+
 ### 2021-02-25: 
-1.实现多设备查询
-2.查询今日收益,总收益,可用收益
-3.设备在线天数
-4.可查看最近七条积分动态
+1. 实现多设备查询
+2. 查询今日收益,总收益,可用收益
+3. 设备在线天数
+4. 可查看最近七条积分动态
 
 ## 使用说明
 
@@ -66,16 +72,27 @@ JDRouterPush
 *如果收到了 GitHub Action 的错误邮件，请检查 WSKEY是不是失效了，如果退出或重登都会导致京东云无线宝 `WSKEY` 失效*
 
 
-## 微信订阅通知
+## 订阅通知
 
 ### 订阅执行结果
 
-1. 前往 [sc.ftqq.com](http://sc.ftqq.com/3.version) 点击登入，创建账号（建议使用 GitHub 登录）。
+目前Turbo版本的消息通道支持以下渠道
 
-2. 点击点[发送消息](http://sc.ftqq.com/?c=code) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
+- 企业微信应用消息
+- Android
+- Bark iOS
+- 企业微信群机器人
+- 钉钉群机器人
+- 飞书群机器人
+- 自定义微信测试号
+- 方糖服务号
 
-3. [绑定微信账号](http://sc.ftqq.com/?c=wechat&a=bind) ，开启微信推送。
-    ![](docs/IMG/serverpush.jpg)
-
+1. 前往 [sct.ftqq.com](https://sct.ftqq.com/sendkey)点击登入，创建账号。
+2. 点击点[SendKey](https://sct.ftqq.com/sendkey) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
+3. [配置消息通道](https://sct.ftqq.com/forward) ，选择方糖服务号，保存即可。
 4. 推送效果展示
-    <img src="docs/IMG/ysxg1.jpg" style="zoom:33%;" /> <img src="docs/IMG/ysxg2.jpg" style="zoom:33%;" />
+   <img src="docs/IMG/ysxg1.jpg" style="zoom:33%;" /> <img src="docs/IMG/ysxg2.jpg" style="zoom:33%;" />
+
+**旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version)即将与4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`
+注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的微信推送方式，选择方糖服务号即可**
+
