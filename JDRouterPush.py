@@ -14,7 +14,7 @@ final_result = {}
 #
 device_name = {}
 # 当前版本
-version = "20210303"
+version = "20210304"
 
 # 获取当天时间和当天积分
 def todayPointIncome():
