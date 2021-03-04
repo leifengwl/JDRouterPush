@@ -11,6 +11,8 @@ headers = {
 }
 # Store query results
 final_result = {}
+#
+device_name = {}
 # 当前版本
 version = "20210303"
 
@@ -189,7 +191,7 @@ def resultDisplay(SERVERPUSHKEY):
         if pointInfo.get("satisfiedTimes"):
             satisfiedTimes = pointInfo["satisfiedTimes"]
         pointRecords = pointInfo["pointRecords"]
-        point_infos = point_infos+ "\n" + "* 京东云无线宝_" + str(mac[-3:]) + "==>" \
+        point_infos = point_infos+ "\n" + "* " + device_name.get(str(mac[-6:]),"京东云无线宝_" + str(mac[-3:])) + "==>" \
                       + "\n   · 今日积分：" + str(todayPointIncome) \
                       + "\n   · 可用积分：" + str(amount) \
                       + "\n   · 总收益积分：" + str(allPointIncome)
@@ -215,6 +217,15 @@ def resultDisplay(SERVERPUSHKEY):
               + "**设备总数:**" + "\n```\n"+ totalRecord + "\n```\n"\
               + "**设备信息如下:**" + "\n```" + point_infos + "\n"
     sendNotification(SERVERPUSHKEY,title,content)
+
+# 解析设备名称
+def resolveDeviceName(DEVICENAME):
+    devicenames = DEVICENAME.split("&")
+    for devicename in devicenames:
+        mac = devicename.split(":")[0]
+        name = devicename.split(":")[1]
+        device_name.update({mac: name})
+
 
 # 推送通知
 def sendNotification(SERVERPUSHKEY,text,desp):
@@ -254,8 +265,9 @@ def checkForUpdates():
         print("checkForUpdate failed!")
 
 # 主操作
-def main(WSKEY,SERVERPUSHKEY):
+def main(WSKEY,SERVERPUSHKEY,DEVICENAME):
     headers["wskey"] = WSKEY
+    resolveDeviceName(DEVICENAME)
     checkForUpdates()
     todayPointIncome()
     todayPointDetail()
@@ -266,4 +278,5 @@ def main(WSKEY,SERVERPUSHKEY):
 if __name__ == '__main__':
     WSKEY = os.environ["WSKEY"]
     SERVERPUSHKEY = os.environ["SERVERPUSHKEY"]
-    main(WSKEY,SERVERPUSHKEY)
+    DEVICENAME = os.environ["DEVICENAME"]
+    main(WSKEY,SERVERPUSHKEY,DEVICENAME)
