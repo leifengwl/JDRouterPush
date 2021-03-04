@@ -276,7 +276,7 @@ def main(WSKEY,SERVERPUSHKEY,DEVICENAME):
 
 # 读取配置文件
 if __name__ == '__main__':
-    WSKEY = os.environ["WSKEY"]
-    SERVERPUSHKEY = os.environ["SERVERPUSHKEY"]
-    DEVICENAME = os.environ["DEVICENAME"]
+    WSKEY = os.environ.get("WSKEY","")
+    SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")
+    DEVICENAME = os.environ.get("DEVICENAME","")
     main(WSKEY,SERVERPUSHKEY,DEVICENAME)
