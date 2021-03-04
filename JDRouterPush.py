@@ -220,11 +220,14 @@ def resultDisplay(SERVERPUSHKEY):
 
 # 解析设备名称
 def resolveDeviceName(DEVICENAME):
-    devicenames = DEVICENAME.split("&")
-    for devicename in devicenames:
-        mac = devicename.split(":")[0]
-        name = devicename.split(":")[1]
-        device_name.update({mac: name})
+    if "" == DEVICENAME:
+        print("未设置自定义设备名")
+    else:
+        devicenames = DEVICENAME.split("&")
+        for devicename in devicenames:
+            mac = devicename.split(":")[0]
+            name = devicename.split(":")[1]
+            device_name.update({mac: name})
 
 
 # 推送通知
