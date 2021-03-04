@@ -219,11 +219,11 @@ def resultDisplay(SERVERPUSHKEY):
     sendNotification(SERVERPUSHKEY,title,content)
 
 # 解析设备名称
-def resolveDeviceName(DEVICENAME):
-    if "" == DEVICENAME:
+def resolveDeviceName(DEVICENAMES):
+    if "" == DEVICENAMES:
         print("未设置自定义设备名")
     else:
-        devicenames = DEVICENAME.split("&")
+        devicenames = DEVICENAMES.split("&")
         for devicename in devicenames:
             mac = devicename.split(":")[0]
             name = devicename.split(":")[1]
@@ -268,9 +268,9 @@ def checkForUpdates():
         print("checkForUpdate failed!")
 
 # 主操作
-def main(WSKEY,SERVERPUSHKEY,DEVICENAME):
+def main(WSKEY,SERVERPUSHKEY,DEVICENAMES):
     headers["wskey"] = WSKEY
-    resolveDeviceName(DEVICENAME)
+    resolveDeviceName(DEVICENAMES)
     checkForUpdates()
     todayPointIncome()
     todayPointDetail()
@@ -281,5 +281,5 @@ def main(WSKEY,SERVERPUSHKEY,DEVICENAME):
 if __name__ == '__main__':
     WSKEY = os.environ.get("WSKEY","")
     SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")
-    DEVICENAME = os.environ.get("DEVICENAME","")
-    main(WSKEY,SERVERPUSHKEY,DEVICENAME)
+    DEVICENAMES = os.environ.get("DEVICENAMES","")
+    main(WSKEY,SERVERPUSHKEY,DEVICENAMES)
