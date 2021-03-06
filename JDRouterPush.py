@@ -11,8 +11,13 @@ headers = {
 }
 # Store query results
 final_result = {}
+# 设备名
+device_name = {}
+# 记录数
+records_num = 7
 # 当前版本
-version = "20210303"
+version = "20210304"
+
 
 # 获取当天时间和当天积分
 def todayPointIncome():
@@ -133,7 +138,7 @@ def pointOperateRecordsShow(mac):
     params = {
         "source": 1,
         "mac": mac,
-        "pageSize": 7,
+        "pageSize": records_num,
         "currentPage": 1
     }
     point_records = []
@@ -189,7 +194,7 @@ def resultDisplay(SERVERPUSHKEY):
         if pointInfo.get("satisfiedTimes"):
             satisfiedTimes = pointInfo["satisfiedTimes"]
         pointRecords = pointInfo["pointRecords"]
-        point_infos = point_infos+ "\n" + "* 京东云无线宝_" + str(mac[-3:]) + "==>" \
+        point_infos = point_infos+ "\n" + "* " + device_name.get(str(mac[-6:]),"京东云无线宝_" + str(mac[-3:])) + "==>" \
                       + "\n   · 今日积分：" + str(todayPointIncome) \
                       + "\n   · 可用积分：" + str(amount) \
                       + "\n   · 总收益积分：" + str(allPointIncome)
@@ -197,7 +202,7 @@ def resultDisplay(SERVERPUSHKEY):
             point_infos = point_infos + "\n   · 累计在线：" + str(satisfiedTimes)  + "天"
         point_infos = point_infos + "\n   · 最近到期积分：" + str(recentExpireAmount) \
                       + "\n   · 最近到期时间：" + recentExpireTime \
-                      + "\n   · 最近7条记录："
+                      + "\n   · 最近" + str(records_num) + "条记录："
         for pointRecord in pointRecords:
             recordType = pointRecord["recordType"]
             recordType_str = ""
@@ -215,6 +220,17 @@ def resultDisplay(SERVERPUSHKEY):
               + "**设备总数:**" + "\n```\n"+ totalRecord + "\n```\n"\
               + "**设备信息如下:**" + "\n```" + point_infos + "\n"
     sendNotification(SERVERPUSHKEY,title,content)
+
+# 解析设备名称
+def resolveDeviceName(DEVICENAME):
+    if "" == DEVICENAME:
+        print("未设置自定义设备名")
+    else:
+        devicenames = DEVICENAME.split("&")
+        for devicename in devicenames:
+            mac = devicename.split(":")[0]
+            name = devicename.split(":")[1]
+            device_name.update({mac: name})
 
 # 推送通知
 def sendNotification(SERVERPUSHKEY,text,desp):
@@ -254,8 +270,11 @@ def checkForUpdates():
         print("checkForUpdate failed!")
 
 # 主操作
-def main(WSKEY,SERVERPUSHKEY):
+def main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM):
+    global records_num
     headers["wskey"] = WSKEY
+    records_num = int(RECORDSNUM)
+    resolveDeviceName(DEVICENAME)
     checkForUpdates()
     todayPointIncome()
     todayPointDetail()
@@ -264,6 +283,8 @@ def main(WSKEY,SERVERPUSHKEY):
 
 # 读取配置文件
 if __name__ == '__main__':
-    WSKEY = os.environ["WSKEY"]
-    SERVERPUSHKEY = os.environ["SERVERPUSHKEY"]
-    main(WSKEY,SERVERPUSHKEY)
+    WSKEY = os.environ.get("WSKEY","")
+    SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")
+    DEVICENAME = os.environ.get("DEVICENAME","")
+    RECORDSNUM = os.environ.get("RECORDSNUM","7")
+    main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM)
