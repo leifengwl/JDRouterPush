@@ -284,7 +284,7 @@ def resultDisplay(type):
         ```
         {detail}
         ```""".format(**notifyContent)
-        server_push(text, desp)
+        server_push(title, content)
     else:
         content = """{content}---
         数据日期:{date}
@@ -297,9 +297,9 @@ def resultDisplay(type):
         {detail}
         """.format(**notifyContent)
         print("标题->", text)
-        print("内容->\n", desp)
-        telegram_bot(text, desp)
-        bark(text, desp)
+        print("内容->\n", content)
+        telegram_bot(text, content)
+        bark(text, content)
 
 
 # Server酱推送
