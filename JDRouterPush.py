@@ -296,10 +296,10 @@ def resultDisplay(type):
 
         {detail}
         """.format(**notifyContent)
-        print("标题->", text)
+        print("标题->", title)
         print("内容->\n", content)
-        telegram_bot(text, content)
-        bark(text, content)
+        telegram_bot(title, content)
+        bark(title, content)
 
 
 # Server酱推送
