@@ -2,6 +2,8 @@ import datetime
 import requests
 import os
 
+# region 全局参数
+
 # API
 jd_base_url = "https://router-app-api.jdcloud.com/v1/regions/cn-north-1/"
 # RequestHeader
@@ -18,6 +20,19 @@ records_num = 7
 # 当前版本
 version = "20210304"
 
+# endregion
+
+# region 环境变量
+
+WSKEY = os.environ.get("WSKEY","")                      # 京东云无线宝中获取
+SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")      # Server酱推送
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN","")        # Telegram推送服务Token
+TG_USER_ID =  os.environ.get("TG_USER_ID","")           # Telegram推送服务UserId
+BARK = os.environ.get("BARK","")                        # bark消息推送服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
+DEVICENAME = os.environ.get("DEVICENAME","")            # 设备名称 mac后6位:设置的名称，多个使用&连接
+RECORDSNUM = os.environ.get("RECORDSNUM","7")           # 需要设置的获取记录条数 不填默认7条
+
+# endregion
 
 # 获取当天时间和当天积分
 def todayPointIncome():
@@ -161,8 +176,39 @@ def pointOperateRecordsShow(mac):
     else:
         print("Request pointOperateRecordsShow failed!")
 
+# 解析设备名称
+def resolveDeviceName(DEVICENAME):
+    if "" == DEVICENAME:
+        print("未设置自定义设备名")
+    else:
+        devicenames = DEVICENAME.split("&")
+        for devicename in devicenames:
+            mac = devicename.split(":")[0]
+            name = devicename.split(":")[1]
+            device_name.update({mac: name})
+
+# 检测更新
+def checkForUpdates():
+    remote_address = "https://raw.githubusercontent.com/leifengwl/JDRouterPush/main/config.ini"
+    headers = {
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36"
+    }
+    res = requests.get(url=remote_address,headers=headers)
+    if res.status_code == 200:
+        res_json = res.json()
+        final_result["announcement"] = res_json["announcement"]
+        if res_json["version"] != version:
+            final_result["updates_version"] = res_json["version"]
+            final_result["update_log"] = res_json["updateLog"]
+        else:
+            print("欢迎使用JDRouterPush!")
+    else:
+        print("checkForUpdate failed!")
+
+# region 通知结果
+
 # 结果显示
-def resultDisplay(SERVERPUSHKEY):
+def resultDisplay():
     today_date = final_result["today_date"]
     today_total_point = final_result["today_total_point"]
     title = today_date + "到账积分:" +  today_total_point
@@ -221,20 +267,19 @@ def resultDisplay(SERVERPUSHKEY):
               + "**设备信息如下:**" + "\n```" + point_infos + "\n"
     sendNotification(SERVERPUSHKEY,title,content)
 
-# 解析设备名称
-def resolveDeviceName(DEVICENAME):
-    if "" == DEVICENAME:
-        print("未设置自定义设备名")
-    else:
-        devicenames = DEVICENAME.split("&")
-        for devicename in devicenames:
-            mac = devicename.split(":")[0]
-            name = devicename.split(":")[1]
-            device_name.update({mac: name})
-
 # 推送通知
-def sendNotification(SERVERPUSHKEY,text,desp):
-    # server推送
+def sendNotification(text,desp):
+    print("标题->",text)
+    print("内容->\n",desp)
+    server_push(text,desp)
+    telegram_bot(text,desp)
+    bark(text,desp)
+
+# Server酱推送
+def server_push(text,desp):
+    if not SERVERPUSHKEY:
+        # print("Server酱推送的SERVERPUSHKEY未设置!!\n取消推送")
+        return
     server_push_url = "https://sc.ftqq.com/" + SERVERPUSHKEY + ".send"
     str = SERVERPUSHKEY[0:3]
     if "SCT" == str:
@@ -251,27 +296,38 @@ def sendNotification(SERVERPUSHKEY,text,desp):
     print("标题->",text)
     print("内容->\n",desp)
 
-# 检测更新
-def checkForUpdates():
-    remote_address = "https://raw.githubusercontent.com/leifengwl/JDRouterPush/main/config.ini"
-    headers = {
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.104 Safari/537.36"
-    }
-    res = requests.get(url=remote_address,headers=headers)
-    if res.status_code == 200:
-        res_json = res.json()
-        final_result["announcement"] = res_json["announcement"]
-        if res_json["version"] != version:
-            final_result["updates_version"] = res_json["version"]
-            final_result["update_log"] = res_json["updateLog"]
-        else:
-            print("欢迎使用JDRouterPush!")
-    else:
-        print("checkForUpdate failed!")
+# tg推送
+def telegram_bot(title, content):
+    print("\n")
+    if not TG_BOT_TOKEN or not TG_USER_ID:
+        # print("Telegram推送的TG_BOT_TOKEN或者TG_USER_ID未设置!!\n取消推送")
+        return
+    print("Telegram 推送开始")
+    send_data = {"chat_id": TG_USER_ID, "text": title +
+                 '\n\n'+content, "disable_web_page_preview": "true"}
+    response = requests.post(
+        url='https://api.telegram.org/bot%s/sendMessage' % (TG_BOT_TOKEN), data=send_data)
+    print(response.text)
+
+# Bark推送
+def bark(title, content):
+    print("\n")
+    if not BARK:
+        # print("bark服务的bark_token未设置!!\n取消推送")
+        return
+    print("bark服务启动")
+    response = requests.get(
+        f"""https://api.day.app/{BARK}/{title}/{content}""")
+    print(response.text)
+
+# endregion
 
 # 主操作
-def main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM):
+def main():
     global records_num
+    if WSKEY is None or WSKEY.strip() == '':
+        print("未获取到环境变量'WSKEY'，执行中止")
+        return
     headers["wskey"] = WSKEY
     records_num = int(RECORDSNUM)
     resolveDeviceName(DEVICENAME)
@@ -279,12 +335,8 @@ def main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM):
     todayPointIncome()
     todayPointDetail()
     pinTotalAvailPoint()
-    resultDisplay(SERVERPUSHKEY)
+    resultDisplay()
 
 # 读取配置文件
 if __name__ == '__main__':
-    WSKEY = os.environ.get("WSKEY","")
-    SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")
-    DEVICENAME = os.environ.get("DEVICENAME","")
-    RECORDSNUM = os.environ.get("RECORDSNUM","7")
-    main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM)
+    main()
