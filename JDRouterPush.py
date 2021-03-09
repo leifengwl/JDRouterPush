@@ -260,42 +260,41 @@ def resultDisplay(type):
 
     if type == 0:
         content = """{content}---
-        **数据日期:**
-        ```
-        {date}
-        ```
-        **今日总收益:**
-        ```
-        {total_today}
-        ```
-        **总可用积分:**
-        ```
-        {avail_today}
-        ```
-        **绑定账户:**
-        ```
-        {account}
-        ```
-        **设备总数:**
-        ```
-        {devicesCount}
-        ```
-        **设备信息如下:**
-        ```
-        {detail}
-        ```""".format(**notifyContent)
+**数据日期:**
+```
+{date}
+```
+**今日总收益:**
+```
+{total_today}
+```
+**总可用积分:**
+```
+{avail_today}
+```
+**绑定账户:**
+```
+{account}
+```
+**设备总数:**
+```
+{devicesCount}
+```
+**设备信息如下:**
+```
+{detail}
+```""".format(**notifyContent)
         server_push(title, content)
     else:
         content = """{content}---
-        数据日期:{date}
-        今日总收益:{total_today}
-        总可用积分:{avail_today}
-        绑定账户:{account}
-        设备总数:{devicesCount}
-        **设备信息如下:**
+数据日期:{date}
+今日总收益:{total_today}
+总可用积分:{avail_today}
+绑定账户:{account}
+设备总数:{devicesCount}
+**设备信息如下:**
 
-        {detail}
-        """.format(**notifyContent)
+{detail}""".format(**notifyContent)
         print("标题->", title)
         print("内容->\n", content)
         telegram_bot(title, content)
