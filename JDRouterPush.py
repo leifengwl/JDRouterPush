@@ -202,7 +202,7 @@ def checkForUpdates():
 # region 通知结果
 
 # 结果显示
-def resultDisplay(type):
+def resultDisplay():
     today_date = final_result["today_date"]
     today_total_point = final_result["today_total_point"]
     title = today_date + "到账积分:" + today_total_point
@@ -255,11 +255,10 @@ def resultDisplay(type):
             createTime = pointRecord["createTime"]
             point_infos = point_infos + "\n          " + \
                 createTime + "   " + recordType_str + str(pointAmount)
-    notifyContent = {"content": content, "date": todayDate, "total_today": today_total_point,
+    notifyContentJson = {"content": content, "date": todayDate, "total_today": today_total_point,
                      "avail_today": total_avail_point, "account": bindAccount, "devicesCount": totalRecord, "detail": point_infos}
 
-    if type == 0:
-        content = """{content}---
+    serverContent = """{content}---
 **数据日期:**
 ```
 {date}
@@ -283,10 +282,9 @@ def resultDisplay(type):
 **设备信息如下:**
 ```
 {detail}
-```""".format(**notifyContent)
-        server_push(title, content)
-    else:
-        content = """{content}---
+```""".format(**notifyContentJson)
+    server_push(title, serverContent)
+    normalContent = """{content}---
 数据日期:{date}
 今日总收益:{total_today}
 总可用积分:{avail_today}
@@ -294,11 +292,11 @@ def resultDisplay(type):
 设备总数:{devicesCount}
 **设备信息如下:**
 
-{detail}""".format(**notifyContent)
-        print("标题->", title)
-        print("内容->\n", content)
-        telegram_bot(title, content)
-        bark(title, content)
+{detail}""".format(**notifyContentJson)
+    print("标题->", title)
+    print("内容->\n", normalContent)
+    telegram_bot(title, normalContent)
+    bark(title, normalContent)
 
 
 # Server酱推送
@@ -363,8 +361,7 @@ def main():
     todayPointIncome()
     todayPointDetail()
     pinTotalAvailPoint()
-    resultDisplay(0)
-    resultDisplay(1)
+    resultDisplay()
 
 
 # region 环境变量
