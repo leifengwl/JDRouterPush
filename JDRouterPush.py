@@ -18,7 +18,7 @@ device_name = {}
 # 记录数
 records_num = 7
 # 当前版本
-version = "20210304"
+version = "20210311"
 
 # endregion
 
