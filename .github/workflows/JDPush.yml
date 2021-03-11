@@ -25,5 +25,7 @@ jobs:
       env:
           WSKEY: ${{ secrets.WSKEY }}
           SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
+          DEVICENAME: ${{ secrets.DEVICENAME }}
+          RECORDSNUM: ${{ secrets.RECORDSNUM }}
       run: |
         python JDRouterPush.py
