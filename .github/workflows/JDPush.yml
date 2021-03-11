@@ -24,6 +24,11 @@ jobs:
     - name: Run JDRouterPush
       env:
           WSKEY: ${{ secrets.WSKEY }}
+          DEVICENAME: ${{ secrets.DEVICENAME }}
+          RECORDSNUM: ${{ secrets.RECORDSNUM }}
           SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+          BARK: ${{ secrets.BARK }}
       run: |
         python JDRouterPush.py
