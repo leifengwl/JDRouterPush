@@ -2,6 +2,8 @@ import datetime
 import requests
 import os
 
+# region 全局参数
+
 # API
 jd_base_url = "https://router-app-api.jdcloud.com/v1/regions/cn-north-1/"
 # RequestHeader
@@ -18,7 +20,14 @@ records_num = 7
 # 当前版本
 version = "20210304"
 
+# endregion
 
+def safe_cast(val, to_type, default=None):
+    try:
+        return to_type(val)
+    except (ValueError, TypeError):
+        return default
+        
 # 获取当天时间和当天积分
 def todayPointIncome():
     today_total_point = 0
@@ -161,66 +170,6 @@ def pointOperateRecordsShow(mac):
     else:
         print("Request pointOperateRecordsShow failed!")
 
-# 结果显示
-def resultDisplay(SERVERPUSHKEY):
-    today_date = final_result["today_date"]
-    today_total_point = final_result["today_total_point"]
-    title = today_date + "到账积分:" +  today_total_point
-    todayDate = final_result["todayDate"]
-    total_avail_point = final_result["total_avail_point"]
-    totalRecord = final_result["totalRecord"]
-    pointInfos = final_result["pointInfos"]
-    content = ""
-    point_infos = ""
-    bindAccount = ""
-    # 更新检测
-    if final_result.get("updates_version"):
-        content = content + "**JDRouterPush更新提醒:**" \
-                  + "\n```\n最新版：" + final_result["updates_version"] \
-                  + "  当前版本：" + version
-        if final_result.get("update_log"):
-            content = content + "\n" + final_result["update_log"] + "\n```"
-    if final_result.get("announcement"):
-        content = content + "\n> " + final_result["announcement"] + " \n\n"
-    for pointInfo in pointInfos:
-        mac = pointInfo["mac"]
-        todayPointIncome = pointInfo["todayPointIncome"]
-        allPointIncome = pointInfo["allPointIncome"]
-        amount = pointInfo["amount"]
-        bindAccount = pointInfo["bindAccount"]
-        recentExpireAmount = pointInfo["recentExpireAmount"]
-        recentExpireTime = pointInfo["recentExpireTime"]
-        satisfiedTimes = ""
-        if pointInfo.get("satisfiedTimes"):
-            satisfiedTimes = pointInfo["satisfiedTimes"]
-        pointRecords = pointInfo["pointRecords"]
-        point_infos = point_infos+ "\n" + "* " + device_name.get(str(mac[-6:]),"京东云无线宝_" + str(mac[-3:])) + "==>" \
-                      + "\n   · 今日积分：" + str(todayPointIncome) \
-                      + "\n   · 可用积分：" + str(amount) \
-                      + "\n   · 总收益积分：" + str(allPointIncome)
-        if satisfiedTimes != "":
-            point_infos = point_infos + "\n   · 累计在线：" + str(satisfiedTimes)  + "天"
-        point_infos = point_infos + "\n   · 最近到期积分：" + str(recentExpireAmount) \
-                      + "\n   · 最近到期时间：" + recentExpireTime \
-                      + "\n   · 最近" + str(records_num) + "条记录："
-        for pointRecord in pointRecords:
-            recordType = pointRecord["recordType"]
-            recordType_str = ""
-            if recordType == 1:
-                recordType_str = "积分收入："
-            else:
-                recordType_str = "积分支出："
-            pointAmount = pointRecord["pointAmount"]
-            createTime = pointRecord["createTime"]
-            point_infos = point_infos + "\n          " + createTime + "   " + recordType_str + str(pointAmount)
-    content = content + "---\n" + "**数据日期:**" + "\n```\n" + todayDate + "\n```\n" \
-              + "**今日总收益:**" + "\n```\n" + today_total_point + "\n```\n" \
-              + "**总可用积分:**" + "\n```\n" + total_avail_point + "\n```\n" \
-              + "**绑定账户:**" + "\n```\n" + bindAccount + "\n```\n"\
-              + "**设备总数:**" + "\n```\n"+ totalRecord + "\n```\n"\
-              + "**设备信息如下:**" + "\n```" + point_infos + "\n"
-    sendNotification(SERVERPUSHKEY,title,content)
-
 # 解析设备名称
 def resolveDeviceName(DEVICENAME):
     if "" == DEVICENAME:
@@ -231,25 +180,6 @@ def resolveDeviceName(DEVICENAME):
             mac = devicename.split(":")[0]
             name = devicename.split(":")[1]
             device_name.update({mac: name})
-
-# 推送通知
-def sendNotification(SERVERPUSHKEY,text,desp):
-    # server推送
-    server_push_url = "https://sc.ftqq.com/" + SERVERPUSHKEY + ".send"
-    str = SERVERPUSHKEY[0:3]
-    if "SCT" == str:
-        server_push_url = "https://sctapi.ftqq.com/" + SERVERPUSHKEY + ".send"
-    params = {
-        "text" : text,
-        "desp" : desp
-    }
-    res = requests.post(url=server_push_url, params=params)
-    if res.status_code == 200:
-        print("推送成功!")
-    else:
-        print("推送失败!")
-    print("标题->",text)
-    print("内容->\n",desp)
 
 # 检测更新
 def checkForUpdates():
@@ -269,22 +199,183 @@ def checkForUpdates():
     else:
         print("checkForUpdate failed!")
 
+# region 通知结果
+
+# 结果显示
+def resultDisplay():
+    today_date = final_result["today_date"]
+    today_total_point = final_result["today_total_point"]
+    title = today_date + "到账积分:" + today_total_point
+    todayDate = final_result["todayDate"]
+    total_avail_point = final_result["total_avail_point"]
+    totalRecord = final_result["totalRecord"]
+    pointInfos = final_result["pointInfos"]
+    content = ""
+    point_infos = ""
+    bindAccount = ""
+    # 更新检测
+    if final_result.get("updates_version"):
+        content = content + "**JDRouterPush更新提醒:**" \
+            + "\n```\n最新版：" + final_result["updates_version"] \
+            + "  当前版本：" + version
+        if final_result.get("update_log"):
+            content = content + "\n" + final_result["update_log"] + "\n```"
+    if final_result.get("announcement"):
+        content = content + "\n> " + final_result["announcement"] + " \n\n"
+    for pointInfo in pointInfos:
+        mac = pointInfo["mac"]
+        todayPointIncome = pointInfo["todayPointIncome"]
+        allPointIncome = pointInfo["allPointIncome"]
+        amount = pointInfo["amount"]
+        bindAccount = pointInfo["bindAccount"]
+        recentExpireAmount = pointInfo["recentExpireAmount"]
+        recentExpireTime = pointInfo["recentExpireTime"]
+        satisfiedTimes = ""
+        if pointInfo.get("satisfiedTimes"):
+            satisfiedTimes = pointInfo["satisfiedTimes"]
+        pointRecords = pointInfo["pointRecords"]
+        point_infos = point_infos + "\n" + "* " + device_name.get(str(mac[-6:]), "京东云无线宝_" + str(mac[-3:])) + "==>" \
+            + "\n   · 今日积分：" + str(todayPointIncome) \
+            + "\n   · 可用积分：" + str(amount) \
+            + "\n   · 总收益积分：" + str(allPointIncome)
+        if satisfiedTimes != "":
+            point_infos = point_infos + "\n   · 累计在线：" + \
+                str(satisfiedTimes) + "天"
+        point_infos = point_infos + "\n   · 最近到期积分：" + str(recentExpireAmount) \
+            + "\n   · 最近到期时间：" + recentExpireTime \
+            + "\n   · 最近" + str(records_num) + "条记录："
+        for pointRecord in pointRecords:
+            recordType = pointRecord["recordType"]
+            recordType_str = ""
+            if recordType == 1:
+                recordType_str = "积分收入："
+            else:
+                recordType_str = "积分支出："
+            pointAmount = pointRecord["pointAmount"]
+            createTime = pointRecord["createTime"]
+            point_infos = point_infos + "\n          " + \
+                createTime + "   " + recordType_str + str(pointAmount)
+    notifyContentJson = {"content": content, "date": todayDate, "total_today": today_total_point,
+                     "avail_today": total_avail_point, "account": bindAccount, "devicesCount": totalRecord, "detail": point_infos}
+
+    serverContent = """{content}---
+**数据日期:**
+```
+{date}
+```
+**今日总收益:**
+```
+{total_today}
+```
+**总可用积分:**
+```
+{avail_today}
+```
+**绑定账户:**
+```
+{account}
+```
+**设备总数:**
+```
+{devicesCount}
+```
+**设备信息如下:**
+```
+{detail}
+```""".format(**notifyContentJson)
+    server_push(title, serverContent)
+    normalContent = """{content}---
+数据日期:{date}
+今日总收益:{total_today}
+总可用积分:{avail_today}
+绑定账户:{account}
+设备总数:{devicesCount}
+**设备信息如下:**
+
+{detail}""".format(**notifyContentJson)
+    print("标题->", title)
+    print("内容->\n", normalContent)
+    telegram_bot(title, normalContent)
+    bark(title, normalContent)
+
+
+# Server酱推送
+def server_push(text, desp):
+    if not SERVERPUSHKEY:
+        # print("Server酱推送的SERVERPUSHKEY未设置!!\n取消推送")
+        return
+    server_push_url = "https://sc.ftqq.com/" + SERVERPUSHKEY + ".send"
+    str = SERVERPUSHKEY[0:3]
+    if "SCT" == str:
+        server_push_url = "https://sctapi.ftqq.com/" + SERVERPUSHKEY + ".send"
+    params = {
+        "text": text,
+        "desp": desp
+    }
+    res = requests.post(url=server_push_url, params=params)
+    if res.status_code == 200:
+        print("推送成功!")
+    else:
+        print("推送失败!")
+    print("标题->", text)
+    print("内容->\n", desp)
+
+# tg推送
+def telegram_bot(title, content):
+    print("\n")
+    if not TG_BOT_TOKEN or not TG_USER_ID:
+        # print("Telegram推送的TG_BOT_TOKEN或者TG_USER_ID未设置!!\n取消推送")
+        return
+    print("Telegram 推送开始")
+    send_data = {"chat_id": TG_USER_ID, "text": title +
+                 '\n\n'+content, "disable_web_page_preview": "true"}
+    response = requests.post(
+        url='https://api.telegram.org/bot%s/sendMessage' % (TG_BOT_TOKEN), data=send_data)
+    print(response.text)
+
+# Bark推送
+def bark(title, content):
+    print("\n")
+    if not BARK:
+        # print("bark服务的bark_token未设置!!\n取消推送")
+        return
+    print("bark服务启动")
+    response = requests.get(
+        f"""https://api.day.app/{BARK}/{title}/{content}""")
+    print(response.text)
+
+# endregion
+
 # 主操作
-def main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM):
+def main():
     global records_num
+    if WSKEY is None or WSKEY.strip() == '':
+        print("未获取到环境变量'WSKEY'，执行中止")
+        return
     headers["wskey"] = WSKEY
+    print(RECORDSNUM)
     records_num = int(RECORDSNUM)
+    print(records_num)
     resolveDeviceName(DEVICENAME)
     checkForUpdates()
     todayPointIncome()
     todayPointDetail()
     pinTotalAvailPoint()
-    resultDisplay(SERVERPUSHKEY)
+    resultDisplay()
+
+
+# region 环境变量
+
+WSKEY = os.environ.get("WSKEY","")                              # 京东云无线宝中获取
+SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")              # Server酱推送
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN","")                # Telegram推送服务Token
+TG_USER_ID =  os.environ.get("TG_USER_ID","")                   # Telegram推送服务UserId
+BARK = os.environ.get("BARK","")                                # bark消息推送服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
+DEVICENAME = os.environ.get("DEVICENAME","")                    # 设备名称 mac后6位:设置的名称，多个使用&连接
+RECORDSNUM = safe_cast(os.environ.get("RECORDSNUM","7"),int,7)  # 需要设置的获取记录条数 不填默认7条
+
+# endregion
 
 # 读取配置文件
 if __name__ == '__main__':
-    WSKEY = os.environ.get("WSKEY","")
-    SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY","")
-    DEVICENAME = os.environ.get("DEVICENAME","")
-    RECORDSNUM = os.environ.get("RECORDSNUM","7")
-    main(WSKEY,SERVERPUSHKEY,DEVICENAME,RECORDSNUM)
+    main()
