@@ -10,14 +10,14 @@ JDRouterPush
 
 ## 项目功能
 
-***当前版本:  20210311***
+***当前版本:  20210314***
 
 1. 查询今日总收益，设备总收益
 2. 查询绑定账户
 3. 单个设备积分收益情况，积分到期提醒，积分操作记录
 4. 支持多设备查询
 5. 支持自定义设置设备名，操作记录条数
-6. 推送支持servier酱,Telegram,Bark
+6. 推送支持servier酱,Telegram,Bark,pushplus
 
 ## 更新日志
 
@@ -72,6 +72,7 @@ JDRouterPush
 | TG_BOT_TOKEN  | Telegram推送服务Token     | 非必填   |
 | TG_USER_ID    | Telegram推送服务UserId     | 非必填   |
 | BARK          | bark消息推送服务,secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串   | 非必填   |
+| PUSHPLUS          | pushplus推送服务Token   | 非必填   |
 
 ***DEVICENAME***变量填写例子：
 
