@@ -388,7 +388,8 @@ def main():
         print("未获取到环境变量'WSKEY'，执行中止")
         return
     headers["wskey"] = WSKEY
-    records_num = int(RECORDSNUM)
+    if RECORDSNUM.isdigit():
+        records_num = int(RECORDSNUM)
     resolveDeviceName(DEVICENAME)
     checkForUpdates()
     todayPointIncome()
