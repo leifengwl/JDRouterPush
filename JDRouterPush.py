@@ -377,7 +377,28 @@ def push_plus(title, content):
         print("pushplus推送成功!")
     else:
         print("pushplus推送失败!")
-
+#企业微信应用消息推送
+def message2qywxapp(title, content):
+    if qywx_touser and qywx_corpid and qywx_corpsecret and qywx_agentid:
+      print("企业微信应用消息推送开始")
+    res = requests.get(
+        f"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={qywx_corpid}&corpsecret={qywx_corpsecret}"
+    )
+    token = res.json().get("access_token", False)
+    data = {
+        "touser": qywx_touser,
+        "agentid": qywx_agentid,
+        "msgtype": "textcard",
+        "textcard": {
+            "title": title,
+            "description": content,
+            "url": "https://github.com/leifengwl/JDRouterPush",
+            "btntxt": "开源项目"
+        }
+    }
+    requests.post(url=f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={token}", data=json.dumps(data))
+    else:
+       print("企业微信应用消息推送失败") 
 
 # endregion
 
