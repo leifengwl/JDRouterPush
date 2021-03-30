@@ -296,7 +296,7 @@ def resultDisplay():
 - ***
 {detail}
 - ***""".format(**notifyContentJson)
-    server_push(title, markdownContent)
+    server_push(title, markdownContent.replace("- ***","```"))
     push_plus(title, markdownContent)
     print("标题->", title)
     print("内容->\n", markdownContent)
