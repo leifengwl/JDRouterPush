@@ -324,10 +324,10 @@ def server_push(text, desp):
     if "SCT" == str:
         server_push_url = "https://sctapi.ftqq.com/" + SERVERPUSHKEY + ".send"
     params = {
-        "text": text,
+        "title": text,
         "desp": desp
     }
-    res = requests.post(url=server_push_url, params=params)
+    res = requests.post(url=server_push_url, data=params)
     if res.status_code == 200:
         print("Server酱推送成功!")
     else:
