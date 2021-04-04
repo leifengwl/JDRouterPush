@@ -327,7 +327,7 @@ def server_push(text, desp):
         "text": text,
         "desp": desp
     }
-    res = requests.post(url=server_push_url, params=params)
+    res = requests.post(url=server_push_url, data=params)
     if res.status_code == 200:
         print("Server酱推送成功!")
     else:
