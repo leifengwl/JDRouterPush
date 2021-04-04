@@ -395,7 +395,7 @@ def main():
     todayPointDetail()
     pinTotalAvailPoint()
     resultDisplay()
-
+ 
 # endregion
 
 # 读取配置文件
