@@ -132,7 +132,7 @@ def pointOperateRecordsShow(mac):
     params = {
         "source": 1,
         "mac": mac,
-        "pageSize": records_num,
+        "pageSize": GlobalVariable.records_num,
         "currentPage": 1
     }
     point_records = []
@@ -239,7 +239,7 @@ def resultDisplay():
                       + "\n    - PCDN：" + pointInfo["pcdnname"] \
                       + "\n    - 最近到期积分：" + str(recentExpireAmount) \
                       + "\n    - 最近到期时间：" + recentExpireTime \
-                      + "\n    - 最近" + str(records_num) + "条记录："
+                      + "\n    - 最近" + str(GlobalVariable.records_num) + "条记录："
         for pointRecord in pointRecords:
             recordType = pointRecord["recordType"]
             recordType_str = ""
@@ -275,14 +275,13 @@ def resultDisplay():
 
 # 主操作
 def main():
-    global records_num
     if GlobalVariable.WSKEY is None or GlobalVariable.WSKEY.strip() == '':
         print("未获取到环境变量'WSKEY'，执行中止")
         return
     GlobalVariable.headers["wskey"] = GlobalVariable.WSKEY
     GlobalVariable.service_headers["tgt"] = GlobalVariable.WSKEY
     if GlobalVariable.RECORDSNUM.isdigit():
-        records_num = int(GlobalVariable.RECORDSNUM)
+        GlobalVariable.records_num = int(GlobalVariable.RECORDSNUM)
     resolveDeviceName(GlobalVariable.DEVICENAME)
     checkForUpdates()
     todayPointIncome()
