@@ -107,16 +107,20 @@ def getControlDevice(mac,i):
         control_device = {"rom":rom,"speed":"↑%s   ↓%s"%(upload_str,download_str),"cpu":cpu + "%","onlineTime":calculatingTime(onlineTime),"wanip":wanip,"model":model}
     elif i == 3:
         # 插件版本
-        pcdn_list = data["pcdn_list"]
-        pcdn_st = pcdn_list[0]
-        status = pcdn_st["status"]
-        nickname = pcdn_st["nickname"]
-        name = pcdn_st["name"]
-        cache_size = pcdn_st["cache_size"]
-        extstorage_exist = data["extstorage_exist"]
-        extstorage_enable = data["extstorage_enable"]
-        board = data["board"]
-        control_device = {"status":status,"nickname":nickname,"pcdnname":name,"cache_size":str(round(int(cache_size)/1000000,2)) + "GB"}
+        if isinstance(data,str):
+            print("无法获取插件信息!")
+            control_device = {"pluginInfo",False}
+        else:
+            pcdn_list = data["pcdn_list"]
+            pcdn_st = pcdn_list[0]
+            status = pcdn_st["status"]
+            nickname = pcdn_st["nickname"]
+            name = pcdn_st["name"]
+            cache_size = pcdn_st["cache_size"]
+            extstorage_exist = data["extstorage_exist"]
+            extstorage_enable = data["extstorage_enable"]
+            board = data["board"]
+            control_device = {"pluginInfo":True,"status":status,"nickname":nickname,"pcdnname":name,"cache_size":str(round(int(cache_size)/1000000,2)) + "GB"}
     index = GlobalVariable.findALocation(mac)
     if index != -1:
         point_info = GlobalVariable.final_result["pointInfos"][index]
