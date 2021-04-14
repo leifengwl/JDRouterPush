@@ -221,22 +221,22 @@ def resultDisplay():
         if pointInfo.get("satisfiedTimes"):
             satisfiedTimes = pointInfo["satisfiedTimes"]
         pointRecords = pointInfo["pointRecords"]
-        point_infos = point_infos + "\n" + "- " + GlobalVariable.device_name.get(str(mac[-6:]), GlobalVariable.device_list[mac]["device_name"]) + "==>" \
+        point_infos +=  "\n" + "- " + GlobalVariable.device_name.get(str(mac[-6:]), GlobalVariable.device_list[mac]["device_name"]) + "==>" \
                       + "\n    - 今日积分：" + str(todayPointIncome) \
                       + "\n    - 可用积分：" + str(amount) \
                       + "\n    - 总收积分：" + str(allPointIncome)
         if satisfiedTimes != "":
-            point_infos = point_infos + "\n    - 累计在线：" + \
-                          str(satisfiedTimes) + "天"
-        point_infos = point_infos + "\n    - 当前网速：" + pointInfo["speed"] \
+            point_infos += "\n    - 累计在线：" + str(satisfiedTimes) + "天"
+        point_infos +=  "\n    - 当前网速：" + pointInfo["speed"] \
                       + "\n    - 当前IP：" + pointInfo["wanip"] \
                       + "\n    - 当前模式：" + pointInfo["model"] \
-                      + "\n    - 固件版本：" + pointInfo["rom"] \
-                      + "\n    - 插件状态：" + pointInfo["status"] \
-                      + "\n    - 插件版本：" + pointInfo["nickname"] \
-                      + "\n    - 缓存大小：" + pointInfo["cache_size"] \
-                      + "\n    - 在线时间：" + pointInfo["onlineTime"] \
-                      + "\n    - PCDN：" + pointInfo["pcdnname"] \
+                      + "\n    - 固件版本：" + pointInfo["rom"]
+        if pointInfo.get("pluginInfo"):
+            point_infos +=  "\n    - 插件状态：" + pointInfo["status"] \
+                          + "\n    - 插件版本：" + pointInfo["nickname"] \
+                          + "\n    - 缓存大小：" + pointInfo["cache_size"] \
+                          + "\n    - PCDN：" + pointInfo["pcdnname"] 
+        point_infos +=  "\n    - 在线时间：" + pointInfo["onlineTime"] \
                       + "\n    - 最近到期积分：" + str(recentExpireAmount) \
                       + "\n    - 最近到期时间：" + recentExpireTime \
                       + "\n    - 最近" + str(GlobalVariable.records_num) + "条记录："
