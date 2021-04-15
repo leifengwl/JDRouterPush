@@ -109,6 +109,7 @@ def getControlDevice(mac,i):
         # 插件版本
         if isinstance(data,str):
             print("无法获取插件信息!")
+            print("信息如下:",data)
             control_device = {"pluginInfo":False}
         else:
             pcdn_list = data["pcdn_list"]
