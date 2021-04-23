@@ -266,7 +266,7 @@ def resultDisplay():
     normalContent = NoticeTemplate.normalTemplate().format(**notifyContentJson)
     NoticePush.telegram_bot(title, normalContent)
     NoticePush.bark(title, normalContent)
-    NoticePush.enterprise_wechat(normalContent)
+    NoticePush.enterprise_wechat(title, normalContent)
 
     # 信息输出测试
     print("标题->", title)
