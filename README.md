@@ -88,7 +88,8 @@ JDRouterPush
 | CORPSECRET          | 应用的凭证密钥secret（如果已经填写ACCESSTOKEN  则无需填写这个）| 非必填   |
 | TOUSER          | touser指定接收消息的成员  默认为“@all”   | 非必填   |
 | AGENTID          | agentid企业应用的id   | 非必填   |
-
+| thumb_media_id          | 企业微信素材库图片id   | 非必填   |
+| author          | 企业微信文章作者名字   | 非必填   |
 ***DEVICENAME***变量填写例子：
 
 例如：完整mac为：ABC12D456EF7(取后6位)    想设置为韭菜1号
@@ -96,6 +97,13 @@ JDRouterPush
 单个设备：456EF7:韭菜1号
 
 多个设备：456EF7:韭菜1号&789FE1:韭菜2号&123FR2:韭菜3号             （中间使用&连接即可）
+
+***thumb_media_id***变量填写说明:
+不填写此变量直接推送text文本格式（由于text/card等推送方式存在字数限制，所以大于3台设备的同学尽量使用图文推送）
+填写此变量直接推送图文格式文章，类似于公众号文章。图片id请等于网页版进入素材库上传一张图片之后点击下载链接，在下载链接内有thumb_media_id=xxx。
+
+***author***变量填写说明:
+图文文章作者名字，设置了thumb_media_id就必须填写。
 
 
 
