@@ -90,6 +90,7 @@ JDRouterPush
 | AGENTID          | agentid企业应用的id   | 非必填   |
 | thumb_media_id          | 企业微信素材库图片id   | 非必填   |
 | author          | 企业微信文章作者名字   | 非必填   |
+
 ***DEVICENAME***变量填写例子：
 
 例如：完整mac为：ABC12D456EF7(取后6位)    想设置为韭菜1号
