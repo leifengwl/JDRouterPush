@@ -36,5 +36,7 @@ jobs:
           CORPSECRET: ${{ secrets.CORPSECRET }}
           TOUSER: ${{ secrets.TOUSER }}
           AGENTID: ${{ secrets.AGENTID }}
+          THUMB_MEDIA_ID: ${{ secrets.THUMB_MEDIA_ID }}
+          AUTHOR: ${{ secrets.AUTHOR }}
       run: |
         python JDRouterPush.py
