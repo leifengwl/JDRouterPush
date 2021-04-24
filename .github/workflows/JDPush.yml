@@ -30,5 +30,13 @@ jobs:
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_USER_ID: ${{ secrets.TG_USER_ID }}
           BARK: ${{ secrets.BARK }}
+          PUSHPLUS: ${{ secrets.PUSHPLUS }}
+          ACCESSTOKEN: ${{ secrets.ACCESSTOKEN }}
+          CORPID: ${{ secrets.CORPID }}
+          CORPSECRET: ${{ secrets.CORPSECRET }}
+          TOUSER: ${{ secrets.TOUSER }}
+          AGENTID: ${{ secrets.AGENTID }}
+          THUMB_MEDIA_ID: ${{ secrets.THUMB_MEDIA_ID }}
+          AUTHOR: ${{ secrets.AUTHOR }}
       run: |
         python JDRouterPush.py
