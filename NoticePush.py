@@ -79,7 +79,7 @@ def enterprise_wechat(title, content):
             print("企业微信应用消息推送的变量未设置或未设置完全!!")
             return
         access_token = GlobalVariable.ACCESSTOKEN
-    if not GlobalVariable.thumb_media_id:
+    if not GlobalVariable.THUMB_MEDIA_ID:
         data = {
             "touser": GlobalVariable.TOUSER,
             "agentid": GlobalVariable.AGENTID,
@@ -104,8 +104,8 @@ def enterprise_wechat(title, content):
                     "articles" : [
                     {
                     "title" : title,
-                    "thumb_media_id" : GlobalVariable.thumb_media_id ,
-                    "author" : GlobalVariable.author ,
+                    "thumb_media_id" : GlobalVariable.THUMB_MEDIA_ID ,
+                    "author" : GlobalVariable.AUTHOR ,
                     "content_source_url": "",
                     "content" : html,
                     "digest": content
