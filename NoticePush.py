@@ -1,6 +1,7 @@
 import requests
 import json
 import GlobalVariable
+import markdown
 
 # Server酱推送
 def server_push(text, desp):
