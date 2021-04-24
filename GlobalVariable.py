@@ -70,8 +70,8 @@ CORPID = os.environ.get("CORPID", "")  # 企业ID  （如果已经填写ACCESSTO
 CORPSECRET = os.environ.get("CORPSECRET", "")  # 应用的凭证密钥  （如果已经填写ACCESSTOKEN  则无需填写这个）
 TOUSER = os.environ.get("TOUSER", "@all")  # touser指定接收消息的成员  默认为全部
 AGENTID = os.environ.get("AGENTID", "")  # agentid企业应用的id
-thumb_media_id = os.environ.get("thumb_media_id", "") #企业微信素材库图片id
-author = os.environ.get("author", "") #企业微信文章作者
+thumb_media_id = os.environ.get("THUMB_MEDIA_ID", "") #企业微信素材库图片id
+author = os.environ.get("AUTHOR", "") #企业微信文章作者
 
 # 查找mac位置
 def findALocation(mac):
