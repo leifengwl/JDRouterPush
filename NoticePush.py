@@ -1,6 +1,7 @@
 import requests
 import json
 import GlobalVariable
+import markdown
 
 # Server酱推送
 def server_push(text, desp):
@@ -65,7 +66,8 @@ def telegram_bot(title, content):
         print("telegram推送失败!")
 
 # 企业微信推送
-def enterprise_wechat(content):
+def enterprise_wechat(title, content):
+    html = markdown.markdown(content)
     access_token = ""
     if not GlobalVariable.ACCESSTOKEN:
         if not GlobalVariable.CORPID or not GlobalVariable.CORPSECRET or not GlobalVariable.TOUSER or not GlobalVariable.AGENTID:
@@ -78,20 +80,44 @@ def enterprise_wechat(content):
             print("企业微信应用消息推送的变量未设置或未设置完全!!")
             return
         access_token = GlobalVariable.ACCESSTOKEN
-
-    data = {
-        "touser": GlobalVariable.TOUSER,
-        "agentid": GlobalVariable.AGENTID,
-        "msgtype": "text",
-        "text": {
-            "content": content
+    if not GlobalVariable.THUMB_MEDIA_ID:
+        data = {
+            "touser": GlobalVariable.TOUSER,
+            "agentid": GlobalVariable.AGENTID,
+            "msgtype": "text",
+            "text": {
+                "content": content
+            }
         }
-    }
-    res = requests.post(url=f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={access_token}",
-                        data=json.dumps(data)).json()
-    errmsg = res["errmsg"]
-    if errmsg == "ok":
-        print("企业微信应用消息推送成功!")
+        res = requests.post(url=f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={access_token}",
+                            data=json.dumps(data)).json()
+        errmsg = res["errmsg"]
+        if errmsg == "ok":
+            print("企业微信应用消息推送成功!")
+        else:
+            print("企业微信应用消息失败!错误信息:"  + errmsg)
     else:
-        print("企业微信应用消息失败!错误信息:"  + errmsg)
-
+        data = {
+            "touser": GlobalVariable.TOUSER,
+            "agentid": GlobalVariable.AGENTID,
+            "msgtype": "mpnews",
+            "mpnews": {
+                    "articles" : [
+                    {
+                    "title" : title,
+                    "thumb_media_id" : GlobalVariable.THUMB_MEDIA_ID ,
+                    "author" : GlobalVariable.AUTHOR ,
+                    "content_source_url": "",
+                    "content" : html,
+                    "digest": content
+                    }
+                    ]
+            }
+        }
+        res = requests.post(url=f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={access_token}",
+                            data=json.dumps(data)).json()
+        errmsg = res["errmsg"]
+        if errmsg == "ok":
+            print("企业微信应用消息推送成功!")
+        else:
+            print("企业微信应用消息失败!错误信息:"  + errmsg)
