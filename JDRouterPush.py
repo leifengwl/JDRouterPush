@@ -233,7 +233,6 @@ def resultDisplay():
                       + "\n    - 固件版本：" + pointInfo["rom"]
         if pointInfo.get("pluginInfo"):
             point_infos +=  "\n    - 插件状态：" + pointInfo["status"] \
-                          + "\n    - 插件版本：" + pointInfo["nickname"] \
                           + "\n    - 缓存大小：" + pointInfo["cache_size"] \
                           + "\n    - PCDN：" + pointInfo["pcdnname"] 
         point_infos +=  "\n    - 在线时间：" + pointInfo["onlineTime"] \
@@ -266,7 +265,7 @@ def resultDisplay():
     normalContent = NoticeTemplate.normalTemplate().format(**notifyContentJson)
     NoticePush.telegram_bot(title, normalContent)
     NoticePush.bark(title, normalContent)
-    NoticePush.enterprise_wechat(normalContent)
+    NoticePush.enterprise_wechat(title, normalContent)
 
     # 信息输出测试
     print("标题->", title)

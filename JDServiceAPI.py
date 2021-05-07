@@ -37,7 +37,7 @@ def getAuthorization(body,accessKey):
     totalDays = distanceDate()
     deviceKey = "Android6.5.5MI 69:%s" % (totalDays)
     deviceKey = hashlib.md5(deviceKey.encode()).hexdigest()
-    time = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
     text = "%spostjson_body%s%s%s%s" % (deviceKey, body, time, accessKey, deviceKey)
     digest = hmac.new(GlobalVariable.hmacKey.encode(), text.encode(), hashlib.sha1).digest()
     decode = base64.b64encode(digest).decode()
@@ -115,15 +115,17 @@ def getControlDevice(mac,i):
                 control_device = {"pluginInfo":False}
             else:
                 pcdn_list = data["pcdn_list"]
-                pcdn_st = pcdn_list[0]
-                status = pcdn_st["status"]
-                nickname = pcdn_st["nickname"]
-                name = pcdn_st["name"]
-                cache_size = pcdn_st["cache_size"]
+                status = ""
+                name = ""
+                cache_size = ""
+                for pcdn_st in pcdn_list:
+                    status += f'''{pcdn_st["nickname"]}({pcdn_st["status"]})   '''
+                    name += f'''{pcdn_st["nickname"]}({pcdn_st["name"]})   '''
+                    cache_size += f'''{pcdn_st["nickname"]}({str(round(int(pcdn_st["cache_size"])/1048/1000,2))}GB)   '''
                 extstorage_exist = data["extstorage_exist"]
                 extstorage_enable = data["extstorage_enable"]
                 board = data["board"]
-                control_device = {"pluginInfo":True,"status":status,"nickname":nickname,"pcdnname":name,"cache_size":str(round(int(cache_size)/1000000,2)) + "GB"}
+                control_device = {"pluginInfo":True,"status":status,"pcdnname":name,"cache_size":cache_size}
         
     else:
         control_device = {"pluginInfo": False}
