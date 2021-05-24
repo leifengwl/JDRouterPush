@@ -33,6 +33,8 @@ def pinTotalAvailPoint():
     res = requests.get(GlobalVariable.jd_base_url + "pinTotalAvailPoint", headers=GlobalVariable.headers)
     if res.status_code == 200:
         res_json = res.json()
+        
+        
         result = res_json["result"]
         total_avail_point = result["totalAvailPoint"]
     else:
