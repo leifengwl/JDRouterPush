@@ -116,7 +116,7 @@ JDRouterPush
 
 ***NETWORK_SEGMENT***变量填写说明:
 
-设置IP网段,例如当前IP为100.84.102.15,你的100.107开头的网段上传速度较快,就可以将NETWORK_SEGMENT变量参数设置为    456EF7:100.107.星号.星号     (将星号两个中文字符换成一个字符星号)
+设置IP网段,例如当前IP为100.84.102.15,你的100.107开头的网段上传速度较快,就可以将NETWORK_SEGMENT变量参数设置为    456EF7:100.107.星号.星号     (将星号两个中文字符换成一个字符星号（*）)
 (456EF7表示mac后6位，参考DEVICENAME变量,（*）代表1-225内所有数字，可以设置大于或者小于,例如你想将IP段设置为100.107.大于100.小于80===>100.107.星号>100.星号<80，格式星号+大于或小于+数字（1-255）)
 注意：不要将IP设置为不可获取到的数值，否则设备一直重启,此变量需为4段已.(点)分割
 
@@ -161,6 +161,4 @@ JDRouterPush
 4. 推送效果展示
    <img src="docs/IMG/ysxg1.jpg" style="zoom:33%;" /> <img src="docs/IMG/ysxg2.jpg" style="zoom:33%;" /> <img src="docs/IMG/ysxg3.jpg" style="zoom:33%;" />
 
-**旧版推送渠道[sc.ftqq.com](http://sc.ftqq.com/9.version)即将于4月底下线，请前往[sct.ftqq.com](https://sct.ftqq.com/sendkey)生成`Turbo`版本的`Key`
-注意，申请Turbo版Key后请配置消息通道，如果想沿用以前的微信推送方式，选择方糖服务号即可**
 
