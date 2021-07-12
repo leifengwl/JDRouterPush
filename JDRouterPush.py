@@ -1,6 +1,6 @@
 import datetime
 import time
-
+import pytz
 import requests
 import GlobalVariable
 import JDServiceAPI
@@ -284,7 +284,7 @@ def resultDisplay():
 
     # 信息输出测试
     print("标题->", title)
-    print("内容->\n", normalContent)
+    #print("内容->\n", normalContent)
 # endregion
 
 # 处理IP
@@ -353,7 +353,7 @@ def runTest():
         if GlobalVariable.NETWORK_SEGMENT is None or GlobalVariable.NETWORK_SEGMENT.strip() == '':
             main()
         else:
-            hourNow = datetime.datetime.now().hour
+            hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
             if hourNow < 6:
                 print("当前时间小于6点,执行IP切换")
                 networkSegmentSwitch()
