@@ -75,60 +75,72 @@ def getControlDevice(mac,i):
         result = json.loads(res["result"])
         streams = result["streams"][0]
         current_value = json.loads(streams["current_value"])
-        data = current_value["data"]
-        if i == 0:
-            # 连接的设备列表
-    #         print(data)
-            pass
-        elif i == 1:
-            # 上传与下载
-            upload = data["upload"]
-            download = data["download"]
-            bandwidth = data["bandwidth"]
-        elif i == 2:
-            # 运行信息
-            mac = data["mac"]
-            rom = data["rom"]
-            sn = data["sn"]
-            upload = data["upload"]
-            download = data["download"]
-            romType = data["romType"]
-            model = data["model"]
-            cpu = data["cpu"]
-            onlineTime = data["onlineTime"]
-            wanip = data["wanip"]
-            mem = data["mem"]
-            upload_str = ""
-            download_str = ""
-            if int(upload) < 10240:
-                upload_str = str(round(int(upload)/10)) + "KB/s"
-                download_str = str(round(int(download)/10)) + "KB/s"
-            else:
-                upload_str = str(round(int(upload)/10/1024,2)) + "MB/s"
-                download_str = str(round(int(upload)/10/1024,2)) + "MB/s"
-            control_device = {"rom":rom,"speed":"↑%s   ↓%s"%(upload_str,download_str),"cpu":cpu + "%","onlineTime":calculatingTime(onlineTime),"wanip":wanip,"model":model}
-        elif i == 3:
-            # 插件版本
-            if isinstance(data,str):
-                print("无法获取插件信息!")
-                print("信息如下:",data)
-                control_device = {"pluginInfo":False}
-            else:
-                pcdn_list = data["pcdn_list"]
-                status = ""
-                name = ""
-                cache_size = ""
-                for pcdn_st in pcdn_list:
-                    status += f'''{pcdn_st["nickname"]}({pcdn_st["status"]})   '''
-                    name += f'''{pcdn_st["nickname"]}({pcdn_st["name"]})   '''
-                    cache_size += f'''{pcdn_st["nickname"]}({str(round(int(pcdn_st["cache_size"])/1048/1000,2))}GB)   '''
-                extstorage_exist = data["extstorage_exist"]
-                extstorage_enable = data["extstorage_enable"]
-                board = data["board"]
-                control_device = {"pluginInfo":True,"status":status,"pcdnname":name,"cache_size":cache_size}
-        
+        if current_value.get("data"):
+            data = current_value["data"]
+            if i == 0:
+                # 连接的设备列表
+        #         print(data)
+                pass
+            elif i == 1:
+                # 上传与下载
+                upload = data["upload"]
+                download = data["download"]
+                bandwidth = data["bandwidth"]
+            elif i == 2:
+                # 运行信息
+                if isinstance(data, str):
+                    print("无法获取运行信息!")
+                    print("信息如下:", data)
+                    control_device.update({"runInfo": False})
+                mac = data["mac"]
+                rom = data["rom"]
+                sn = data["sn"]
+                upload = data["upload"]
+                download = data["download"]
+                romType = data["romType"]
+                model = data["model"]
+                cpu = data["cpu"]
+                onlineTime = data["onlineTime"]
+                wanip = data["wanip"]
+                mem = data["mem"]
+                upload_str = ""
+                download_str = ""
+                if int(upload) < 10240:
+                    upload_str = str(round(int(upload)/10)) + "KB/s"
+                    download_str = str(round(int(download)/10)) + "KB/s"
+                else:
+                    upload_str = str(round(int(upload)/10/1024,2)) + "MB/s"
+                    download_str = str(round(int(upload)/10/1024,2)) + "MB/s"
+                control_device.update({"runInfo": True,"rom":rom,"speed":"↑%s   ↓%s"%(upload_str,download_str),"cpu":cpu + "%","onlineTime":calculatingTime(onlineTime),"wanip":wanip,"model":model})
+            elif i == 3:
+                # 插件版本
+                if isinstance(data,str):
+                    print("无法获取插件信息!")
+                    print("信息如下:",data)
+                    control_device.update({"pluginInfo":False})
+                else:
+                    pcdn_list = data["pcdn_list"]
+                    # print(pcdn_list)
+                    status = ""
+                    # name = ""
+                    cache_size = ""
+                    for pcdn_st in pcdn_list:
+                        status += f'''{pcdn_st["nickname"]}({pcdn_st["status"]})   '''
+                        # name += f'''{pcdn_st["nickname"]}({pcdn_st["name"]})   '''
+                        cache_size += f'''{pcdn_st["nickname"]}({str(round(int(pcdn_st["cache_size"])/1048/1000,2))}GB)   '''
+                    extstorage_exist = data["extstorage_exist"]
+                    extstorage_enable = data["extstorage_enable"]
+                    board = data["board"]
+                    control_device.update({"pluginInfo":True,"status":status,"cache_size":cache_size})
+        elif current_value.get("msg"):
+            print(current_value.get("msg"))
     else:
-        control_device = {"pluginInfo": False}
+        if res.json()["error"] is not None:
+            error = res.json()["error"]
+            errorCode = error['errorCode']
+            errorInfo = error['errorInfo']
+            print("错误代码:%s,错误信息:%s"%(errorCode,errorInfo))
+        control_device.update({"ControlDevice": False})
         print("Request getControlDevice failed!")
         
     index = GlobalVariable.findALocation(mac)

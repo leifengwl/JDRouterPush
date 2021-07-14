@@ -1,4 +1,6 @@
 import datetime
+import time
+import pytz
 import requests
 import GlobalVariable
 import JDServiceAPI
@@ -168,6 +170,19 @@ def resolveDeviceName(DEVICENAME):
             name = devicename.split(":")[1]
             GlobalVariable.device_name.update({mac: name})
 
+# 解析设备ip
+def resolveDeviceIP(DEVICE_IP):
+    if "" == DEVICE_IP:
+        # print("未设置自定义IP")
+        pass
+    else:
+        deviceIPs = DEVICE_IP.split("&")
+        for deviceIP in deviceIPs:
+            mac = deviceIP.split(":")[0]
+            ip = deviceIP.split(":")[1]
+            GlobalVariable.device_ip.update({mac: ip})
+
+
 
 # 检测更新
 def checkForUpdates():
@@ -227,14 +242,14 @@ def resultDisplay():
                       + "\n    - 总收积分：" + str(allPointIncome)
         if satisfiedTimes != "":
             point_infos += "\n    - 累计在线：" + str(satisfiedTimes) + "天"
-        point_infos +=  "\n    - 当前网速：" + pointInfo["speed"] \
-                      + "\n    - 当前IP：" + pointInfo["wanip"] \
-                      + "\n    - 当前模式：" + pointInfo["model"] \
-                      + "\n    - 固件版本：" + pointInfo["rom"]
+        if pointInfo.get("runInfo"):
+            point_infos +=  "\n    - 当前网速：" + pointInfo["speed"] \
+                          + "\n    - 当前IP：" + pointInfo["wanip"] \
+                          + "\n    - 当前模式：" + pointInfo["model"] \
+                          + "\n    - 固件版本：" + pointInfo["rom"]
         if pointInfo.get("pluginInfo"):
             point_infos +=  "\n    - 插件状态：" + pointInfo["status"] \
-                          + "\n    - 缓存大小：" + pointInfo["cache_size"] \
-                          + "\n    - PCDN：" + pointInfo["pcdnname"] 
+                          + "\n    - 缓存大小：" + pointInfo["cache_size"]
         point_infos +=  "\n    - 在线时间：" + pointInfo["onlineTime"] \
                       + "\n    - 最近到期积分：" + str(recentExpireAmount) \
                       + "\n    - 最近到期时间：" + recentExpireTime \
@@ -269,16 +284,55 @@ def resultDisplay():
 
     # 信息输出测试
     print("标题->", title)
-    print("内容->\n", normalContent)
+    #print("内容->\n", normalContent)
 # endregion
+
+# 处理IP
+def handleIP(wanip, ipSegment):
+    print("当前IP:%s ===> 期待IP:%s"%(wanip,ipSegment))
+    wanip_list = wanip.split(".")
+    ipSegment_list = ipSegment.split(".")
+    for wanip,ipSegment in zip(wanip_list,ipSegment_list):
+        if wanip == ipSegment or ipSegment == "*":
+            pass
+        else:
+            if "<" in ipSegment:
+                ip = ipSegment.split("<")[1]
+                if int(wanip) >= int(ip):
+                    return False
+            elif ">" in ipSegment:
+                ip = ipSegment.split(">")[1]
+                if int(wanip) <= int(ip):
+                    return False
+            else:
+                return False
+    return True
+
+# ip切换
+def networkSegmentSwitch():
+    resolveDeviceIP(GlobalVariable.NETWORK_SEGMENT)
+    todayPointDetail()
+    if GlobalVariable.final_result.get("pointInfos"):
+        pointInfos = GlobalVariable.final_result["pointInfos"]
+        for pointInfo in pointInfos:
+            mac = pointInfo["mac"]
+            wanip = pointInfo["wanip"]
+            if GlobalVariable.device_ip.get(str(mac[-6:])) is not None:
+                ipSegment = GlobalVariable.device_ip.get(str(mac[-6:]))
+                if handleIP(wanip,ipSegment):
+                    print("ip段符合")
+                else:
+                    print("IP段不符合")
+                    # 重启路由器
+                    JDServiceAPI.getControlDevice(mac,4)
+                    print("等待重启。。。")
+                    time.sleep(30)
+                    raise Exception('重新启动')
+    else:
+        raise Exception('获取IP失败')
 
 # 主操作
 def main():
-    if GlobalVariable.WSKEY is None or GlobalVariable.WSKEY.strip() == '':
-        print("未获取到环境变量'WSKEY'，执行中止")
-        return
-    GlobalVariable.headers["wskey"] = GlobalVariable.WSKEY
-    GlobalVariable.service_headers["tgt"] = GlobalVariable.WSKEY
     if GlobalVariable.RECORDSNUM.isdigit():
         GlobalVariable.records_num = int(GlobalVariable.RECORDSNUM)
     resolveDeviceName(GlobalVariable.DEVICENAME)
@@ -289,6 +343,32 @@ def main():
     resultDisplay()
 # endregion
 
+def runTest():
+    try:
+        if GlobalVariable.WSKEY is None or GlobalVariable.WSKEY.strip() == '':
+            print("未获取到环境变量'WSKEY'，执行中止")
+            return
+        GlobalVariable.headers["wskey"] = GlobalVariable.WSKEY
+        GlobalVariable.service_headers["tgt"] = GlobalVariable.WSKEY
+        if GlobalVariable.NETWORK_SEGMENT is None or GlobalVariable.NETWORK_SEGMENT.strip() == '':
+            main()
+        else:
+            hourNow = datetime.datetime.now(pytz.timezone('PRC')).hour
+            if hourNow < 6:
+                print("当前时间小于6点,执行IP切换")
+                networkSegmentSwitch()
+            else:
+                print("当前时间大于6点,执行信息推送")
+                main()
+    except Exception as e:
+        print("出现错误：", e)
+        print("准备重新执行...")
+        time.sleep(3)
+        runTest()
+
+
+
 # 读取配置文件
 if __name__ == '__main__':
-    main()
+    runTest()
+

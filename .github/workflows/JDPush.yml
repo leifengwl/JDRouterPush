@@ -38,5 +38,6 @@ jobs:
           AGENTID: ${{ secrets.AGENTID }}
           THUMB_MEDIA_ID: ${{ secrets.THUMB_MEDIA_ID }}
           AUTHOR: ${{ secrets.AUTHOR }}
+          NETWORK_SEGMENT: ${{ secrets.NETWORK_SEGMENT }}
       run: |
         python JDRouterPush.py
