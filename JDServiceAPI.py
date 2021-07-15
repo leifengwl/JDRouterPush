@@ -110,7 +110,7 @@ def getControlDevice(mac,i):
                     download_str = str(round(int(download)/10)) + "KB/s"
                 else:
                     upload_str = str(round(int(upload)/10/1024,2)) + "MB/s"
-                    download_str = str(round(int(upload)/10/1024,2)) + "MB/s"
+                    download_str = str(round(int(download)/10/1024,2)) + "MB/s"
                 control_device.update({"runInfo": True,"rom":rom,"speed":"↑%s   ↓%s"%(upload_str,download_str),"cpu":cpu + "%","onlineTime":calculatingTime(onlineTime),"wanip":wanip,"model":model})
             elif i == 3:
                 # 插件版本
