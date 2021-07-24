@@ -198,7 +198,7 @@ def checkForUpdates():
             GlobalVariable.final_result["updates_version"] = res_json["version"]
             GlobalVariable.final_result["update_log"] = res_json["updateLog"]
         else:
-            print("欢迎使用JDRouterPush!")
+            print("小目标:撸东哥一个亿")
     else:
         print("checkForUpdate failed!")
 # region 通知结果
