@@ -29,6 +29,7 @@ cmds = [
     "get_router_status_info",    # 获取路由器状态信息 上传与下载
     "get_router_status_detail",    # 获取路由器版本 mac  sn  上传  下载  cpu  路由在线时间(秒)  wanip  内存
     "jdcplugin_opt.get_pcdn_status",    # 获取路由器插件版本   缓存大小
+    "reboot_system"     # 重启路由器
 ]
 
 # 请求参数
@@ -49,12 +50,14 @@ service_body = '{"feed_id":"%s","command":[{"current_value":{"cmd":"%s"},"stream
 final_result = {}
 # 设备名
 device_name = {}
+# 设备ip
+device_ip = {}
 # 设备MAC 昵称 feed_id
 device_list = {}
 # 记录数
 records_num = 7
 # 当前版本
-version = "20210506"
+version = "20210711"
 
 # 环境变量
 WSKEY = os.environ.get("WSKEY", "")  # 京东云无线宝中获取
@@ -72,6 +75,7 @@ TOUSER = os.environ.get("TOUSER", "@all")  # touser指定接收消息的成员  
 AGENTID = os.environ.get("AGENTID", "")  # agentid企业应用的id
 THUMB_MEDIA_ID = os.environ.get("THUMB_MEDIA_ID", "") #企业微信素材库图片id
 AUTHOR = os.environ.get("AUTHOR", "") #企业微信文章作者
+NETWORK_SEGMENT = os.environ.get("NETWORK_SEGMENT", "") #网段格式：123OFO:100.108.*>48.*>8
 
 # 查找mac位置
 def findALocation(mac):
