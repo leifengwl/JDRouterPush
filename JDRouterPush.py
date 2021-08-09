@@ -250,7 +250,7 @@ def resultDisplay():
         if pointInfo.get("pluginInfo"):
             point_infos +=  "\n    - 插件状态：" + pointInfo["status"] \
                           + "\n    - 缓存大小：" + pointInfo["cache_size"]
-        point_infos +=  "\n    - 在线时间：" + pointInfo["onlineTime"] \
+        point_infos +=  "\n    - 在线时间：" + pointInfo.get("onlineTime", "---") \
                       + "\n    - 最近到期积分：" + str(recentExpireAmount) \
                       + "\n    - 最近到期时间：" + recentExpireTime \
                       + "\n    - 最近" + str(GlobalVariable.records_num) + "条记录："
