@@ -121,3 +121,21 @@ def enterprise_wechat(title, content):
             print("企业微信应用消息推送成功!")
         else:
             print("企业微信应用消息失败!错误信息:"  + errmsg)
+     
+# 企业微信群机器人 推送
+def qywx_group_push(title, content):
+    if not GlobalVariable.QYWXGROUPBOT:
+        print("企业微信群机器人推送的QYWXGROUPBOT未设置!!")
+        return
+    qywx_group_push_url = GlobalVariable.QYWXGROUPBOT
+    data = {
+        "msgtype": "text",
+        "text": {
+            "content": content
+        }
+    }
+    res = requests.post(url=qywx_group_push_url, data=json.dumps(data))
+    if res.status_code == 200:
+        print("企业微信群机器人推送成功!")
+    else:
+        print("企业微信群机器人推送失败!")
