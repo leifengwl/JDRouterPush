@@ -6,6 +6,7 @@ import GlobalVariable
 import JDServiceAPI
 import NoticePush
 import NoticeTemplate
+import calendar
 from urllib.parse import quote
 
 
@@ -43,10 +44,33 @@ def pinTotalAvailPoint():
     return total_avail_point
 
 
+# 获取打卡消息
+def benefitDayInfo(mac):
+    year = datetime.date.today().year
+    month = datetime.date.today().month
+    startTime = datetime.date(year, month, day=1).strftime(r'%Y-%m-%d')
+    weekDay, monthCountDay = calendar.monthrange(year, month)
+    endTime = datetime.date(year, month, day=monthCountDay).strftime(r'%Y-%m-%d')
+    page = "1"
+    pageSize = str(monthCountDay)
+    benefit_url = r"https://router-app-api.jdcloud.com/v1/router:benefitDayInfo"
+    params = {
+        "mac": mac,
+        "startTime": startTime,
+        "endTime": endTime,
+        "page": page,
+        "pageSize": pageSize
+    }
+    res = requests.get(benefit_url, params=params, headers=GlobalVariable.headers)
+    if res.status_code == 200:
+        res_json = res.json()
+        result = res_json["result"]
+        online_list = result["data"]["onlineList"]
+
 # 路由账户信息
 def routerAccountInfo(mac):
     params = {
-        "mac": mac,
+        "mac": mac
     }
     res = requests.get(GlobalVariable.jd_base_url + "routerAccountInfo", params=params, headers=GlobalVariable.headers)
     if res.status_code == 200:
