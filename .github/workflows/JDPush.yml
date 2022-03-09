@@ -39,5 +39,6 @@ jobs:
           THUMB_MEDIA_ID: ${{ secrets.THUMB_MEDIA_ID }}
           AUTHOR: ${{ secrets.AUTHOR }}
           NETWORK_SEGMENT: ${{ secrets.NETWORK_SEGMENT }}
+          QYWXGROUPBOT: ${{ secrets.QYWXGROUPBOT }}
       run: |
         python JDRouterPush.py
