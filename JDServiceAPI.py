@@ -95,8 +95,8 @@ def getControlDevice(mac,i):
                 mac = data["mac"]
                 rom = data["rom"]
                 sn = data["sn"]
-                upload = data["upload"]
-                download = data["download"]
+                upload = data["upload"] if len(data["upload"]) != 0 else "0"
+                download = data["download"] if len(data["download"]) != 0 else "0"
                 romType = data["romType"]
                 model = data["model"]
                 cpu = data["cpu"]
