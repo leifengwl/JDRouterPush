@@ -130,7 +130,7 @@ def getControlDevice(mac,i):
                         cache_size += f'''{pcdn_st["nickname"]}({str(round(int(pcdn_st["cache_size"])/1048/1000,2))}GB)   '''
                     extstorage_exist = data["extstorage_exist"]
                     extstorage_enable = data["extstorage_enable"]
-                    board = data["board"]
+                    #board = data["board"] //delete useless code
                     control_device.update({"pluginInfo":True,"status":status,"cache_size":cache_size})
         elif current_value.get("msg"):
             print(current_value.get("msg"))
