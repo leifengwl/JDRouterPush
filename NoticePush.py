@@ -8,10 +8,10 @@ def server_push(text, desp):
     if not GlobalVariable.SERVERPUSHKEY:
         print("Server酱推送的SERVERPUSHKEY未设置!!")
         return
-    server_push_url = "https://api2.pushdeer.com/message/push?pushkey="+ GlobalVariable.SERVERPUSHKEY + ".send"
+    server_push_url = "https://sc.ftqq.com/" + GlobalVariable.SERVERPUSHKEY + ".send"
     str = GlobalVariable.SERVERPUSHKEY[0:3]
     if "SCT" == str:
-        server_push_url = "https://api2.pushdeer.com/message/push?pushkey="+ GlobalVariable.SERVERPUSHKEY + ".send"
+        server_push_url = "https://sctapi.ftqq.com/" + GlobalVariable.SERVERPUSHKEY + ".send"
     params = {
         "text": text,
         "desp": desp
@@ -121,3 +121,11 @@ def enterprise_wechat(title, content):
             print("企业微信应用消息推送成功!")
         else:
             print("企业微信应用消息失败!错误信息:"  + errmsg)
+            from pypushdeer import PushDeer
+# pushdeer推送
+pushdeer = PushDeer(pushkey="your_push_key")
+pushdeer.send_text("hello world", desp="optional description")
+pushdeer.send_markdown("# hello world", desp="**optional** description in markdown")
+pushdeer.send_image("https://github.com/easychen/pushdeer/raw/main/doc/image/clipcode.png")
+pushdeer.send_image(
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=")
