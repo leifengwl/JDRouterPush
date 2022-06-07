@@ -8,10 +8,10 @@ def server_push(text, desp):
     if not GlobalVariable.SERVERPUSHKEY:
         print("Server酱推送的SERVERPUSHKEY未设置!!")
         return
-    server_push_url = "https://sc.ftqq.com/" + GlobalVariable.SERVERPUSHKEY + ".send"
+    server_push_url = "https://api2.pushdeer.com/message/push?pushkey="+ GlobalVariable.SERVERPUSHKEY + ".send"
     str = GlobalVariable.SERVERPUSHKEY[0:3]
     if "SCT" == str:
-        server_push_url = "https://sctapi.ftqq.com/" + GlobalVariable.SERVERPUSHKEY + ".send"
+        server_push_url = "https://api2.pushdeer.com/message/push?pushkey="+ GlobalVariable.SERVERPUSHKEY + ".send"
     params = {
         "text": text,
         "desp": desp
