@@ -123,19 +123,19 @@ def enterprise_wechat(title, content):
             print("企业微信应用消息失败!错误信息:"  + errmsg)
             from pypushdeer import PushDeer
 # pushdeer推送
-def server_push(text, desp):
+def pushdeer_push(text, desp):
     if not GlobalVariable.your_push_key:
         print("pushdeer推送的your_push_key未设置!!")
         return
-    server_push_url = "https://api2.pushdeer.com/message/push?pushkey=" + GlobalVariable.your_push_key + ".send"
+    pushdeer_push_url = "https://api2.pushdeer.com/message/push?pushkey=" + GlobalVariable.your_push_key + ".send"
     str = GlobalVariable.your_push_key[0:3]
     if "SCT" == str:
-        server_push_url = "https://api2.pushdeer.com/message/push?pushkey=" + GlobalVariable.your_push_key + ".send"
+        pushdeer_push_url = "https://api2.pushdeer.com/message/push?pushkey=" + GlobalVariable.your_push_key + ".send"
     params = {
         "text": text,
         "desp": desp
     }
-    res = requests.post(url=server_push_url, data=params)
+    res = requests.post(url=pushdeer_push_url, data=params)
     if res.status_code == 200:
         print("pushdeer推送成功!")
     else:
