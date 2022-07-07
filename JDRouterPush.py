@@ -19,7 +19,7 @@ def todayPointIncome():
         result = res_json["result"]
         today_total_point = result["todayTotalPoint"]
         todayDate = result["todayDate"]
-        today_date = datetime.datetime.strptime(todayDate, "%Y-%m-%d").strftime("%Y年%m月%d日")
+        today_date = datetime.datetime.strptime(todayDate, "%Y%m%d").strftime("%Y年%m月%d日")
     else:
         errorMessage = res.json()['error']['message']
         print(errorMessage)
