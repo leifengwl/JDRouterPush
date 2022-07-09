@@ -6,7 +6,7 @@ JDRouterPush
 
 ## 项目简介
 
-本项目调用京东云无线宝API,可每天定时推送积分收益情况,帮助你更好的观察主要信息,不收集用户任何信息.
+本项目调用云无线宝API,可每天定时推送积分收益情况,帮助你更好的观察主要信息,不收集用户任何信息.
 
 ## 项目功能
 
@@ -40,7 +40,7 @@ JDRouterPush
 2. 支持自定义设置记录条数
 
 ### 2021-03-02: 
-1. 查询绑定的京东账户
+1. 查询绑定的账户
 2. 通知排版优化
 3. 脚本检测更新
 4. 支持Server酱Turbo版
@@ -56,14 +56,14 @@ JDRouterPush
 ### Actions 方式
 
 1. **Fork 本项目**
-2. **获取京东云无线宝wskey**
+2. **获取云无线宝wskey**
 - 目前只用Android抓包演示（抓包工具有很多，这里使用HttpCanary作为演示）
 
 - 打开HttpCanary点击右下角按钮开始抓包
 
   <img src="docs/IMG/httpcanary1.jpg" style="zoom: 33%;" />
 
-- 然后再打开京东云无线宝,点击积分管理
+- 然后再打开云无线宝,点击积分管理
 
   <img src="docs/IMG/httpcanary2.jpg" style="zoom: 33%;" /><img src="docs/IMG/httpcanary3.jpg" style="zoom: 33%;" />
 
@@ -79,7 +79,7 @@ JDRouterPush
 
 | Name          | Value                                    | 是否必填 |
 | ------------- | ---------------------------------------- | -------- |
-| WSKEY         | 从京东云无线宝中获取                    | 必填     |
+| WSKEY         | 从云无线宝中获取                    | 必填     |
 | SERVERPUSHKEY | server酱推送的sckey                    | 非必填   |
 | DEVICENAME    | 格式：mac后6位:设置的名称，多个使用&连接 | 非必填   |
 | RECORDSNUM    | 需要设置的获取记录条数   不填默认7条     | 非必填   |
@@ -137,7 +137,7 @@ JDRouterPush
     # 示例： 每天晚上22点30执行 '30 14 * * *'
 ```
 
-*如果收到了 GitHub Action 的错误邮件，请检查 WSKEY是不是失效了，如果退出或重登都会导致京东云无线宝 `WSKEY` 失效*
+*如果收到了 GitHub Action 的错误邮件，请检查 WSKEY是不是失效了，如果退出或重登都会导致云无线宝 `WSKEY` 失效*
 
 
 ## 订阅通知
