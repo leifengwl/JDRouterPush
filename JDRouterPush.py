@@ -59,7 +59,7 @@ def routerAccountInfo(mac):
         GlobalVariable.service_headers["pin"] = quote(bindAccount)
         recentExpireAmount = accountInfo["recentExpireAmount"]
         recentExpireTime = accountInfo["recentExpireTime"]
-        recentExpireTime_str = datetime.datetime.fromtimestamp(recentExpireTime / 1000).strftime("%Y-%m-%d %H:%M:%S")
+        recentExpireTime_str = datetime.datetime.fromtimestamp(recentExpireTime / 1000).strftime("%Y%m%d %H:%M:%S")
         account_info = {"amount": str(amount), "bindAccount": str(bindAccount),
                         "recentExpireAmount": str(recentExpireAmount), "recentExpireTime": recentExpireTime_str}
         index = GlobalVariable.findALocation(mac)
@@ -153,7 +153,7 @@ def pointOperateRecordsShow(mac):
             recordType = pointRecord["recordType"]
             pointAmount = pointRecord["pointAmount"]
             createTime = pointRecord["createTime"]
-            createTime_str = datetime.datetime.fromtimestamp(createTime / 1000).strftime("%Y-%m-%d")
+            createTime_str = datetime.datetime.fromtimestamp(createTime / 1000).strftime("%Y%m%d")
             point_record = {"recordType": recordType, "pointAmount": pointAmount, "createTime": createTime_str}
             point_records.append(point_record)
         index = GlobalVariable.findALocation(mac)
