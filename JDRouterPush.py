@@ -113,7 +113,7 @@ def todayPointDetail():
         todayDate = result["todayDate"]
         totalRecord = result["pageInfo"]["totalRecord"]
         pointInfos = result["pointInfos"]
-        GlobalVariable.final_result["todayDate"] = todayDate
+        GlobalVariable.final_result["todayDate"] = datetime.datetime.strptime(todayDate, "%Y%m%d").strftime("%Y-%m-%d")
         GlobalVariable.final_result["totalRecord"] = str(totalRecord)
         GlobalVariable.final_result["pointInfos"] = pointInfos
         for info in pointInfos:
