@@ -57,7 +57,7 @@ device_list = {}
 # 记录数
 records_num = 7
 # 当前版本
-version = "20210810"
+version = "20220711"
 
 # 环境变量
 WSKEY = os.environ.get("WSKEY", "")  # 京东云无线宝中获取
