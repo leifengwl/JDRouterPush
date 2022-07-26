@@ -6,19 +6,6 @@ import hmac
 import base64
 import GlobalVariable
 
-# 获取今天是第几天
-def distanceDate():
-    year = datetime.datetime.now().year
-    month = datetime.datetime.now().month
-    day = datetime.datetime.now().day
-    months = (0,31,59,90,120,151,181,212,243,273,304,334)
-    totalDays = months[month-1]
-    totalDays += day
-    if(year % 400 == 0)or((year % 4 == 0) and (year % 100 != 0)):
-        if month > 2:
-            totalDays += 1
-    return totalDays
-
 # 通过秒数计算时间
 def calculatingTime(onlineTime):
     day = 0
@@ -34,10 +21,10 @@ def calculatingTime(onlineTime):
     return "%s天%s小时%s分钟%s秒"%(day,hour,minute,second)
 
 def getAuthorization(body,accessKey):
-    totalDays = distanceDate()
+    totalDays = datetime.datetime.now().strftime("%j")
     deviceKey = "Android6.5.5MI 69:%s" % (totalDays)
     deviceKey = hashlib.md5(deviceKey.encode()).hexdigest()
-    time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    time = datetime.datetime.now().isoformat()[:-3] + "Z"
     text = "%spostjson_body%s%s%s%s" % (deviceKey, body, time, accessKey, deviceKey)
     digest = hmac.new(GlobalVariable.hmacKey.encode(), text.encode(), hashlib.sha1).digest()
     decode = base64.b64encode(digest).decode()
