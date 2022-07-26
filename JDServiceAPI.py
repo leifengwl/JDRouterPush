@@ -24,7 +24,7 @@ def getAuthorization(body,accessKey):
     totalDays = datetime.datetime.now().strftime("%j")
     deviceKey = "Android6.5.5MI 69:%s" % (totalDays)
     deviceKey = hashlib.md5(deviceKey.encode()).hexdigest()
-    time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    time = datetime.datetime.now().isoformat()[:-3] + "Z"
     text = "%spostjson_body%s%s%s%s" % (deviceKey, body, time, accessKey, deviceKey)
     digest = hmac.new(GlobalVariable.hmacKey.encode(), text.encode(), hashlib.sha1).digest()
     decode = base64.b64encode(digest).decode()
