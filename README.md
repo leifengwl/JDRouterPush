@@ -10,7 +10,7 @@ JDRouterPush
 
 ## 项目功能
 
-***当前版本:  20210810***
+***当前版本:  20220711***
 
 1. 查询今日总收益，设备总收益
 2. 查询绑定账户
@@ -23,6 +23,9 @@ JDRouterPush
 9. 推送支持servier酱,Telegram,Bark,pushplus,企业微信(支持文本推送/图文推送两种方式)
 
 ## 更新日志
+
+### 2022-07-11:
+1. 修复时间格式化错误
 
 ### 2021-07-11:
 1. 自定义IP段（只在6点前执行,需要更改每日定时,6点前执行一次，建议2-5点内）
@@ -153,8 +156,7 @@ JDRouterPush
 - 钉钉群机器人
 - 飞书群机器人
 - 自定义微信测试号
-- 方糖服务号
-
+- 方糖服务
 1. 前往 [sct.ftqq.com](https://sct.ftqq.com/sendkey)点击登入，创建账号。
 2. 点击点[SendKey](https://sct.ftqq.com/sendkey) ，生成一个 Key。将其增加到 Github Secrets 中，变量名为 `SERVERPUSHKEY`
 3. [配置消息通道](https://sct.ftqq.com/forward) ，选择方糖服务号，保存即可。
