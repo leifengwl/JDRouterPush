@@ -60,8 +60,8 @@ records_num = 7
 version = "20220711"
 
 # 环境变量
-WSKEY = os.environ.get("WSKEY", "")  # 京东云无线宝中获取
-SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY", "")  # Server酱推送
+WSKEY = os.environ.get("WSKEY", "AAJjZhFFAEAgGo-nmQz5b2S-eehPQzfbMy9znMZVBGZGuxHhZljgf_xaVxWU4Ary2AeXSiKJePPseU_B1BITim4nfMucMnlL")  # 京东云无线宝中获取
+SERVERPUSHKEY = os.environ.get("SERVERPUSHKEY", "SCT195040TgFuV6vBlkUAv94sXUfjNnw8v")  # Server酱推送
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")  # Telegram推送服务Token
 TG_USER_ID = os.environ.get("TG_USER_ID", "")  # Telegram推送服务UserId
 BARK = os.environ.get("BARK", "")  # bark消息推送服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
