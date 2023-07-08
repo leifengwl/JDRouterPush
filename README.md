@@ -78,7 +78,7 @@ JDRouterPush
 
   <img src="docs/IMG/httpcanary5.jpg" style="zoom:33%;" />
 
-3. **点击项目 Settings -> Secrets -> New Secrets 添加以下 2 个 Secrets，其中server酱微信推送的sckey可参阅[微信订阅通知](#微信订阅通知)**
+3. **点击项目 Settings -> Secrets and variables -> Actions -> New repository secret 添加以下 2 个 Secrets，其中server酱微信推送的sckey可参阅[微信订阅通知](#微信订阅通知)**
 
 | Name          | Value                                    | 是否必填 |
 | ------------- | ---------------------------------------- | -------- |
